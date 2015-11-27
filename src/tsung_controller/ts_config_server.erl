@@ -202,6 +202,7 @@ init([LogDir]) ->
 %%          {stop, Reason, Reply, State}   | (terminate/2 is called)
 %%          {stop, Reason, State}            (terminate/2 is called)
 %%--------------------------------------------------------------------
+%% 从配置文件中读取session等
 handle_call({read_config, ConfigFile}, _From, State=#state{logdir=LogDir}) ->
     case catch ts_config:read(ConfigFile, LogDir) of
         {ok, Config=#config{curid=LastReqId,sessions=[LastSess| Sessions]}} ->
