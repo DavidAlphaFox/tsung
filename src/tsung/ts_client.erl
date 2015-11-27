@@ -23,7 +23,7 @@
 %%%  the EPL license and distribute linked combinations including
 %%%  the two; the MPL (Mozilla Public License), which EPL (Erlang
 %%%  Public License) is based on, is included in this exception.
-
+%%%  封装各种请求的协议
 -module(ts_client).
 -vc('$Id$ ').
 -author('nicolas.niclausse@niclux.org').

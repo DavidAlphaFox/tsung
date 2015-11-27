@@ -279,10 +279,12 @@ handle_call({get_user_port, IP}, _From, State=#state{ports=Ports}) ->
     {reply, {ok, CPort}, State#state{ports = NewPorts}};
 
 %% get a new session id and user parameters for the given node
+%% 建立一个新的session
 handle_call({get_next_session, HostName, PhaseId}, _From, State=#state{users=Users}) ->
     Config = State#state.config,
     {value, Client} = lists:keysearch(HostName, #client.host, Config#config.clients),
     ?DebugF("get new session for ~p~n",[_From]),
+    %% 选择创建session
     case choose_session(Config#config.sessions, Config#config.total_popularity, PhaseId) of
         {ok, Session=#session{id=Id}} ->
             ?LOGF("Session ~p chosen~n",[Id],?INFO),
@@ -364,6 +366,7 @@ handle_call(Request, _From, State) ->
 %%          {stop, Reason, State}            (terminate/2 is called)
 %%--------------------------------------------------------------------
 %% start the launcher on the current beam
+%% 创建launcher
 handle_cast({newbeams, HostList}, State=#state{logdir   = LogDir,
                                                hostname = LocalHost,
                                                config   = Config}) ->
@@ -840,6 +843,7 @@ local_launcher([Host],LogDir,Config) ->
     NewAppSpec = lists:keyreplace(env, 1, AppSpec, {env, Env}),
 
     ok = application:load({application, tsung, NewAppSpec}),
+    %% 加载并执行tsung应用
     case application:start(tsung) of
         ok ->
             ?LOG("Application started, activate launcher, ~n", ?INFO),
@@ -851,6 +855,7 @@ local_launcher([Host],LogDir,Config) ->
                 undefined ->
                     ""
             end,
+            %% 使用ts_launcher_*开始任务
             ts_launcher_static:launch({node(), Host, []}),
             ts_launcher:launch({node(), Host, [], Config#config.seed}),
             1 ;

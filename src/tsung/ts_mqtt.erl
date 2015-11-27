@@ -252,6 +252,7 @@ parse_bidi(Data, State=#state_rcv{acc = Acc, datasize = DataSize}) ->
 %% Purpose:  parse tags in the XML config file related to the protocol
 %% Returns:  List
 %%----------------------------------------------------------------------
+%% 解析配置文件
 parse_config(Element, Conf) ->
 	ts_config_mqtt:parse_config(Element, Conf).
 

@@ -253,7 +253,7 @@ handle_cast({add, Data}, State=#state{stats=Stats}) when is_tuple(Data) ->
     New = ts_stats_mon:add_stats_data(Data, Stats#stats.os_mon),
     NewStats = Stats#stats{os_mon=New},
     {noreply,State#state{stats=NewStats}};
-
+%%记录新的Clinet创建的ID和时间
 handle_cast({newclient, Who, When}, State=#state{stats=Stats}) ->
     Clients =  State#state.client+1,
     OldCount = Stats#stats.users_count,
